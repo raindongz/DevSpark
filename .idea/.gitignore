@@ -6,3 +6,25 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/
+
+# Created by .ignore support plugin (hsz.mobi)
+### Java template
+# Compiled class file
+*.class
+
+/target
+/bin
+bin/
+
+# Log file
+*.log
