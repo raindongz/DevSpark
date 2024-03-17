@@ -1,4 +1,4 @@
-package com.devspark.apigatway.config;
+package com.devspark.apigateway.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;

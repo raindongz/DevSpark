@@ -1,2 +1,4 @@
-package com.devspark.userservice.exception;public class ErrorDetail {
+package com.devspark.userservice.exception;
+
+public record ErrorDetails(String timestamp, String message, String path, String errorCode) {
 }

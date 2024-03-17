@@ -1,4 +1,4 @@
-package com.devspark.apigatway.utils;
+package com.devspark.apigateway.utils;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;
