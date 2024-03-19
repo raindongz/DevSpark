@@ -19,6 +19,9 @@ public class UserInfoEntity {
     @Column(columnDefinition = "SERIAL", name = "id")
     private Long id;
 
+    @Column(name = "user_id")
+    private Long userId;
+
     @Column(name = "username", unique = true, nullable = false, length = 20)
     private String username;
 

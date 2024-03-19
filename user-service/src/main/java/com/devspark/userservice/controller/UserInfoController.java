@@ -21,7 +21,7 @@ public class UserInfoController {
     private UserInfoService userInfoService;
 
     @PostMapping("/get-my-recommend-list")
-    public ResponseEntity<?> getRecommendUserList(@RequestBody @Valid GetRecomUserListDTO getRecomUserListDTO){
+    public ResponseEntity<GetRecomUserListVO> getRecommendUserList(@RequestBody @Valid GetRecomUserListDTO getRecomUserListDTO){
         GetRecomUserListVO getRecomUserListVO = userInfoService.getMyRecommendUserList(getRecomUserListDTO);
         return new ResponseEntity<>(getRecomUserListVO, HttpStatus.OK);
     }
