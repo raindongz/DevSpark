@@ -1,11 +1,12 @@
 package com.devspark.authservice.service.impl;
 
 import com.devspark.authservice.constants.DeleteFlags;
-import com.devspark.authservice.entity.UserInfoEntity;
+import com.devspark.authservice.entity.AuthEntity;
 import com.devspark.authservice.exception.customExceptions.IncorrectPasswordException;
 import com.devspark.authservice.exception.customExceptions.JWTSignException;
 import com.devspark.authservice.exception.customExceptions.UserNotFoundException;
 import com.devspark.authservice.pojo.dto.CreateUserDTO;
+import com.devspark.authservice.pojo.dto.CreateUserProfileDTO;
 import com.devspark.authservice.pojo.dto.LoginUserDTO;
 import com.devspark.authservice.pojo.mapper.UserMapper;
 import com.devspark.authservice.pojo.vo.CreateUserVO;
@@ -22,6 +23,7 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -48,24 +50,35 @@ public class AuthServiceImpl implements AuthService {
     private String rsaPrivateKey;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CreateUserVO createUser(CreateUserDTO createUserDTO) {
-        // 1. copy the bean properties to auth entity and userInfoInternalDTO
-        UserInfoEntity userInfoEntity = UserMapper.INSTANCE.userDTOToEntity(createUserDTO);
+        // 1. copy the bean properties to auth entity
+         AuthEntity authEntity = UserMapper.INSTANCE.userDTOToAuthEntity(createUserDTO);
 
         // 2. set rest of entity properties
-        userInfoEntity.setDeletedFlag(DeleteFlags.NOT_DELETED);
-        userInfoEntity.setPasswordChangedAt(Date.from(Instant.parse("0001-01-01T00:00:00Z")));
-        userInfoEntity.setCreatedAt(new Date());
-        userInfoEntity.setUpdatedAt(new Date());
+        authEntity.setDeletedFlag(DeleteFlags.NOT_DELETED);
+        authEntity.setPasswordChangedAt(Date.from(Instant.parse("0001-01-01T00:00:00Z")));
+        authEntity.setCreatedAt(new Date());
+        authEntity.setUpdatedAt(new Date());
 
-        // 3. calculate and set the total score of user
+        // 3. save the entity in this Auth Service
+        AuthEntity save = authRepository.save(authEntity);
+
+        // 4. copy the properties of CreateUserProfileDTO. call User micro Service to save the user profile
+        CreateUserProfileDTO createUserProfileDTO = UserMapper.INSTANCE.userDTOToUserProfile(createUserDTO);
+
+        // 5. set rest of entity properties
+        createUserProfileDTO.setUserId(save.getId());
+        createUserProfileDTO.setDeletedFlag(DeleteFlags.NOT_DELETED);
+        createUserProfileDTO.setCreatedAt(new Date());
+        createUserProfileDTO.setUpdatedAt(new Date());
+
+        // 6. calculate and set the total score of user
         Integer totalPoints = calculatePoints(createUserDTO);
-        userInfoEntity.setTotalScore(totalPoints);
+        createUserProfileDTO.setTotalScore(totalPoints);
 
-        // 4. call user service to store user profile
+        // 7. call user service to store user profile
 
-        // 4. save the entity in this Auth Service
-        authRepository.save(userInfoEntity);
 
         // 5. return success if no error
         return new CreateUserVO(true);
@@ -125,7 +138,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginUserVO loginUser(LoginUserDTO request) {
         // 1. check if user exist
-        Optional<UserInfoEntity> userInfo = authRepository.getUserInfoEntityByUsername(request.username());
+        Optional<AuthEntity> userInfo = authRepository.getUserInfoEntityByUsername(request.username());
         log.debug("username :" + request.username());
         if (userInfo.isEmpty()) {
             throw new UserNotFoundException("User not exist");

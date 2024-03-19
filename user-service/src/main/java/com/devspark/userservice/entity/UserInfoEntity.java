@@ -1,4 +1,4 @@
-package com.devspark.authservice.entity;
+package com.devspark.userservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -21,9 +21,6 @@ public class UserInfoEntity {
 
     @Column(name = "username", unique = true, nullable = false, length = 20)
     private String username;
-
-    @Column(name = "hashed_password", nullable = false, length = 256)
-    private String hashedPassword;
 
     @Column(name = "email", unique = true, nullable = false, length = 25)
     private String email;
