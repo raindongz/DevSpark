@@ -67,9 +67,6 @@ public class UserInfoEntity {
     @Column(name = "total_score", nullable = false)
     private Integer totalScore;
 
-    @Column(name = "password_changed_at")
-    private Date passwordChangedAt;
-
     @Column(name = "deleted_flag", nullable = false)
     private Integer deletedFlag;
 

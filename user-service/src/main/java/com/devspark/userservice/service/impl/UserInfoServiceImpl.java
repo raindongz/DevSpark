@@ -1,5 +1,6 @@
 package com.devspark.userservice.service.impl;
 
+import com.devspark.userservice.constants.DeleteFlags;
 import com.devspark.userservice.constants.ScoreLowerAndUpperBound;
 import com.devspark.userservice.entity.UserInfoEntity;
 import com.devspark.userservice.exception.customExceptions.UserNotFoundException;
@@ -29,9 +30,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public GetRecomUserListVO getMyRecommendUserList(GetRecomUserListDTO getRecomUserListDTO) {
         // 1. get my score
-        Optional<UserInfoEntity> userInfo = userInfoRepository.getUserInfoEntityByUserId(getRecomUserListDTO.getUserId());
+        Optional<UserInfoEntity> userInfo = userInfoRepository.getUserInfoEntityByUserIdAndDeletedFlag(getRecomUserListDTO.getUserId(), DeleteFlags.NOT_DELETED);
         if (userInfo.isEmpty()){
-            log.error("user not exist: " + getRecomUserListDTO.getUserId());
+            log.error("user not exist, userid: " + getRecomUserListDTO.getUserId());
             throw new UserNotFoundException("user not exist");
         }
 
