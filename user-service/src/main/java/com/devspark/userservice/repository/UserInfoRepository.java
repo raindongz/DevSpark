@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> {
 
-    @Query("SELECT u FROM UserInfoEntity u WHERE u.totalScore BETWEEN :min AND :max")
+    @Query("SELECT u FROM UserInfoEntity u WHERE u.totalScore BETWEEN :min AND :max AND u.deletedFlag=0")
     List<UserInfoEntity> getUserInfoListByScoreRange(int min, int max);
 
-    Optional<UserInfoEntity> getUserInfoEntityByUserId(Long userId);
+    Optional<UserInfoEntity> getUserInfoEntityByUserIdAndDeletedFlag(Long userId, Integer deleted);
 }
