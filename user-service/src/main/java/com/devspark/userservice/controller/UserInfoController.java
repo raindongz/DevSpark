@@ -26,4 +26,6 @@ public class UserInfoController {
         return new ResponseEntity<>(getRecomUserListVO, HttpStatus.OK);
     }
 
+
+
 }
