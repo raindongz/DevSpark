@@ -53,4 +53,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         return getRecomUserListVO;
     }
+
+    @Override
+    public List<UserInfoEntity> getAllUserInfo() {
+        return userInfoRepository.findAll();
+    }
 }
