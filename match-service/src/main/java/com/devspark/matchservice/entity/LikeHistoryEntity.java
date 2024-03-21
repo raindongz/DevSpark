@@ -18,7 +18,7 @@ public class LikeHistoryEntity {
     private Long personBeLiked;
 
     @Column(name = "person_click_like", nullable = false)
-    private Long personClickLike;
+    private Long personClickLiked;
 
     @Column(name = "create_date", nullable = false)
     private Date createDate;

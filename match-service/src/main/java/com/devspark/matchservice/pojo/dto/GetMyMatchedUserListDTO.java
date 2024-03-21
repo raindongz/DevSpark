@@ -1,12 +1,6 @@
 package com.devspark.matchservice.pojo.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import java.util.List;
 
-@Data
-public class GetMyMatchedUserListDTO {
-    @NotNull(message = "user id must not be null")
-    @Min(value = 1, message = "user id must not be null")
-    private Long userId;
+public record GetMyMatchedUserListDTO(List<Long> userId) {
 }
