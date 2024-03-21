@@ -1,6 +1,8 @@
 package com.devspark.matchservice.controller;
 
+import com.devspark.matchservice.pojo.dto.GetMyMatchedUserListDTO;
 import com.devspark.matchservice.pojo.dto.GetMyRecommendUserListDTO;
+import com.devspark.matchservice.pojo.vo.GetMatchedUserListVO;
 import com.devspark.matchservice.pojo.vo.GetRecomUserListVO;
 import com.devspark.matchservice.service.MatchService;
 import jakarta.validation.Valid;
@@ -23,6 +25,13 @@ public class MatchController {
     public ResponseEntity<GetRecomUserListVO> getMyRecommendationUserList(@RequestBody @Valid GetMyRecommendUserListDTO requestBody){
         GetRecomUserListVO myRecommendListVO = matchService.getMyRecommendUserList(requestBody);
         return new ResponseEntity<>(myRecommendListVO, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/get-my-matched-list")
+    public ResponseEntity<GetMatchedUserListVO> getMyMatchedUserList(@RequestBody @Valid GetMyMatchedUserListDTO requestBody){
+        GetMatchedUserListVO getMyMatchedUserListVO = matchService.getMyMatchedUserList(requestBody);
+        return new ResponseEntity<>(getMyMatchedUserListVO, HttpStatus.OK);
     }
 
 }
