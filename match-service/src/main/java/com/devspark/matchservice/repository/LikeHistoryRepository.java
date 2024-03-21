@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface LikeHistoryRepository extends JpaRepository<LikeHistoryEntity, Long> {
 
-    List<LikeHistoryEntity> getAllByPersonBeLiked(Long userId);
+    List<LikeHistoryEntity> findAllByPersonBeLiked(Long userId);
+    List<LikeHistoryEntity> findAllByPersonClickLiked(Long userId);
+
+    void deleteByPersonClickLikedAndPersonBeLiked(Long clickId, Long beLiked);
 }
