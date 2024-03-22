@@ -1,7 +1,9 @@
 package com.devspark.userservice.controller;
 
 
+import com.devspark.userservice.entity.UserInfoEntity;
 import com.devspark.userservice.pojo.dto.GetRecomUserListDTO;
+import com.devspark.userservice.pojo.dto.UserListQueryDTO;
 import com.devspark.userservice.pojo.vo.GetRecomUserListVO;
 import com.devspark.userservice.service.UserInfoService;
 import com.devspark.userservice.entity.UserInfoEntity;
@@ -31,4 +33,9 @@ public class UserInfoController {
         List<UserInfoEntity> users = userInfoService.getAllUserInfo();
         return ResponseEntity.ok(users);
     }
+    @PostMapping("/get-user-list")
+    public List<UserInfoEntity> getUserList(@RequestBody UserListQueryDTO userListQueryDTO){
+        return userInfoService.getUserList(userListQueryDTO);
+    }
+
 }
