@@ -6,7 +6,6 @@ import com.devspark.userservice.pojo.dto.GetRecomUserListDTO;
 import com.devspark.userservice.pojo.dto.UserListQueryDTO;
 import com.devspark.userservice.pojo.vo.GetRecomUserListVO;
 import com.devspark.userservice.service.UserInfoService;
-import com.devspark.userservice.entity.UserInfoEntity;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,9 +32,17 @@ public class UserInfoController {
         List<UserInfoEntity> users = userInfoService.getAllUserInfo();
         return ResponseEntity.ok(users);
     }
+
+    @PostMapping("/save-user-info")
+    public ResponseEntity<UserInfoEntity> saveUserInfo(@RequestBody UserInfoEntity userInfoEntity){
+        UserInfoEntity userAdded = userInfoService.saveUserInfo(userInfoEntity);
+        return ResponseEntity.ok(userAdded);
+    }
+
     @PostMapping("/get-user-list")
-    public List<UserInfoEntity> getUserList(@RequestBody UserListQueryDTO userListQueryDTO){
-        return userInfoService.getUserList(userListQueryDTO);
+    public ResponseEntity<List<UserInfoEntity>> getUserList(@RequestBody UserListQueryDTO userListQueryDTO){
+        List<UserInfoEntity> userList = userInfoService.getUserList(userListQueryDTO);
+        return ResponseEntity.ok(userList);
     }
 
 }

@@ -17,9 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -61,6 +61,13 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public List<UserInfoEntity> getAllUserInfo() {
         return userInfoRepository.findAll();
+    }
+
+    @Override
+    public UserInfoEntity saveUserInfo(UserInfoEntity userInfoEntity) {
+        userInfoEntity.setCreatedAt(new Date());
+        userInfoEntity.setUpdatedAt(new Date());
+        return userInfoRepository.save(userInfoEntity);
     }
 
     @Override
