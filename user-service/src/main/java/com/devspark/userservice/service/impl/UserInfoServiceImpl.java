@@ -7,8 +7,9 @@ import com.devspark.userservice.exception.customExceptions.UserNotFoundException
 import com.devspark.userservice.pojo.dto.GetRecomUserListDTO;
 import com.devspark.userservice.pojo.dto.UserListQueryDTO;
 import com.devspark.userservice.pojo.mapper.UserInfoMapper;
-import com.devspark.userservice.pojo.vo.GetRecomUserListVO;
-import com.devspark.userservice.pojo.vo.RecommendedUser;
+import com.devspark.userservice.pojo.vo.matchedService.getMatchedListApi.MatchedUserInfo;
+import com.devspark.userservice.pojo.vo.matchedService.getRecommendApi.GetRecomUserListVO;
+import com.devspark.userservice.pojo.vo.matchedService.getRecommendApi.RecommendedUser;
 import com.devspark.userservice.repository.UserInfoRepository;
 import com.devspark.userservice.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,7 +46,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         List<UserInfoEntity> userInfoListByScoreRange = userInfoRepository.getUserInfoListByScoreRange(
                 userInfo.get().getTotalScore() - ScoreLowerAndUpperBound.LOWER_BOUND,
                 userInfo.get().getTotalScore() + ScoreLowerAndUpperBound.UPPER_BOUND
-        );
+        ).stream().filter(each -> !Objects.equals(each.getUserId(), getRecomUserListDTO.getUserId())).toList();
 
         // 3. construct VO list and copy beans
         GetRecomUserListVO getRecomUserListVO = new GetRecomUserListVO();
@@ -53,14 +55,19 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .map(UserInfoMapper.INSTANCE::userEntityToVO)
                 .toList();
 
-        getRecomUserListVO.setRecommendedUsers(listOfRecommendUser);
+        getRecomUserListVO.setRecommendedUserList(listOfRecommendUser);
 
         return getRecomUserListVO;
     }
 
     @Override
-    public List<UserInfoEntity> getAllUserInfo() {
-        return userInfoRepository.findAll();
+    public UserInfoEntity getMyProfile(Long userId) {
+        Optional<UserInfoEntity> myInfoEntity = userInfoRepository.findById(userId);
+        if (myInfoEntity.isEmpty()){
+            log.error("user not exist: " + userId);
+            throw new UserNotFoundException("user not exist");
+        }
+        return myInfoEntity.get();
     }
 
     @Override
@@ -71,7 +78,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserInfoEntity> getUserList(UserListQueryDTO userListQueryDTO) {
+    public List<MatchedUserInfo> getUserList(UserListQueryDTO userListQueryDTO) {
         // Default not pageable
         Pageable pageable = Pageable.unpaged();
         // If page and pageSize are not null, then pageable
@@ -88,6 +95,8 @@ public class UserInfoServiceImpl implements UserInfoService {
             }else
                 pageable = PageRequest.of(userListQueryDTO.getPage() - 1, userListQueryDTO.getPageSize());
         }
-        return userInfoRepository.getUserList(userListQueryDTO.getUserIds(), pageable);
+        List<UserInfoEntity> userList = userInfoRepository.getUserList(userListQueryDTO.getUserIds(), pageable);
+        List<MatchedUserInfo> resultList = userList.stream().map(UserInfoMapper.INSTANCE::userEntityToMatchedUserVO).toList();
+        return resultList;
     }
 }
