@@ -1,6 +1,8 @@
 package com.devspark.authservice.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Date;
@@ -20,6 +22,9 @@ public class AuthEntity {
 
     @Column(name = "hashed_password", nullable = false, length = 256)
     private String hashedPassword;
+
+    @Column(name = "email", nullable = false, length = 256)
+    private String email;
 
     @Column(name = "password_changed_at")
     private Date passwordChangedAt;

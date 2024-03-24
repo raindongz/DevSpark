@@ -1,4 +1,4 @@
-package com.devspark.userservice.pojo.vo;
+package com.devspark.userservice.pojo.vo.matchedService.getRecommendApi;
 
 import lombok.Data;
 
