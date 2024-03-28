@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    consul:
+      config:
+        enabled: false
+      discovery:
+        instanceId: ${spring.application.name}-${server.port}-${random.int[1,99]}
+        prefer-agent-address: true
+      host: 127.0.0.1
+      port: 8500
+#      host: 127.0.0.1
+#      port: 8500
+
+    config:
+      server:
+        git:
+          uri: git@github.com:raindongz/DevSpark-config-server.git
+          ignore-local-ssh-settings: true
+          default-label: main
+          private-key: |
+
+server:
+  port: 8888
+#  port: 8888
