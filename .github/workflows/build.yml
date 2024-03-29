@@ -28,9 +28,11 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: replace config with secrets
+        env:
+          CONFIG_SERVER: ${{secrets.CONFIG_SERVER_PROPERTIES}}
         run: |
-          echo ${{secrets.CONFIG_SERVER_PROPERTIES}} > application.properties
-          cat ${{secrets.CONFIG_SERVER_PROPERTIES}}
+          echo $CONFIG_SERVER > application.properties
+          cat CONFIG_SERVER
 
       - name: Build, tag, and push docker image to Amazon ECR
         working-directory: config-server
