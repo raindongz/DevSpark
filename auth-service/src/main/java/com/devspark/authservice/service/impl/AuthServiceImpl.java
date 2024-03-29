@@ -13,6 +13,7 @@ import com.devspark.authservice.pojo.vo.CreateUserVO;
 import com.devspark.authservice.pojo.vo.LoginUserVO;
 import com.devspark.authservice.repository.AuthRepository;
 import com.devspark.authservice.service.AuthService;
+import com.devspark.authservice.service.FeignClientForUserService;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -41,9 +42,11 @@ import java.util.Optional;
 public class AuthServiceImpl implements AuthService {
 
     private final AuthRepository authRepository;
+    private final FeignClientForUserService feignClientForUserService;
 
-    public AuthServiceImpl(AuthRepository authRepository) {
+    public AuthServiceImpl(AuthRepository authRepository, FeignClientForUserService feignClientForUserService) {
         this.authRepository = authRepository;
+        this.feignClientForUserService = feignClientForUserService;
     }
 
     @Value("${rsa.private-key}")
@@ -78,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
         createUserProfileDTO.setTotalScore(totalPoints);
 
         // 7. call user service to store user profile
-
+        CreateUserProfileDTO response = feignClientForUserService.saveUserInfo(createUserProfileDTO);
 
         // 5. return success if no error
         return new CreateUserVO(true);
