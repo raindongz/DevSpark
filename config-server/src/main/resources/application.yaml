@@ -14,10 +14,10 @@ spring:
     config:
       server:
         git:
-          uri: ${{secrets.CONFIG_SERVER_GIT_URI}}
+          uri: johndoe@gmail.git
           ignore-local-ssh-settings: true
           default-label: main
           private-key: ${SSH_KEY}
 
 server:
-  port: ${{secrets.CONFIG_SERVER_PORT}}
+  port: 0000
