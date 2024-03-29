@@ -7,20 +7,17 @@ spring:
         enabled: false
       discovery:
         instanceId: ${spring.application.name}-${server.port}-${random.int[1,99]}
-        prefer-agent-address: true
+        prefer-ip-address: true
       host: 127.0.0.1
       port: 8500
-#      host: 127.0.0.1
-#      port: 8500
 
     config:
       server:
         git:
-          uri: git@github.com:raindongz/DevSpark-config-server.git
+          uri: ${{secrets.CONFIG_SERVER_GIT_URI}}
           ignore-local-ssh-settings: true
           default-label: main
-          private-key: |
+          private-key: ${SSH_KEY}
 
 server:
-  port: 8888
-#  port: 8888
+  port: ${{secrets.CONFIG_SERVER_PORT}}
