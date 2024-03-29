@@ -29,8 +29,8 @@ jobs:
 
       - name: replace config with secrets
         run: |
-          sed -i "s/0000/${{ secrets.CONFIG_SERVER_PORT }}/g; \
-                  s/johndoe@gmail.git/${{ secrets.CONFIG_SERVER_GIT_URI }}/g" application.properties
+          echo ${{CONFIG_SERVER_PROPERTIES}} > application.properties
+          cat ${{CONFIG_SERVER_PROPERTIES}}
 
       - name: Build, tag, and push docker image to Amazon ECR
         working-directory: config-server
