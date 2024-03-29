@@ -31,7 +31,7 @@ public class MatchController {
         return new ResponseEntity<>(getMyMatchedUserListVO, HttpStatus.OK);
     }
 
-    @PostMapping("/likeOrUnlike")
+    @PostMapping("/like-or-unlike")
     public ResponseEntity<LikeOrUnlikeVO> likeOrUnlike(@RequestHeader(name = "user_id")Long userId, @RequestBody @Valid LikeOrUnlikeDTO requestBody){
         LikeOrUnlikeVO likeOrUnlikeVO = matchService.likeOrUnlike(userId, requestBody);
         return new ResponseEntity<>(likeOrUnlikeVO, HttpStatus.OK);

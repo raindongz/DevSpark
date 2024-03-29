@@ -1,7 +1,5 @@
 package com.devspark.authservice.pojo.dto;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.util.Date;

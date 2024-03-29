@@ -4,7 +4,8 @@ package com.devspark.userservice.controller;
 import com.devspark.userservice.entity.UserInfoEntity;
 import com.devspark.userservice.pojo.dto.GetRecomUserListDTO;
 import com.devspark.userservice.pojo.dto.UserListQueryDTO;
-import com.devspark.userservice.pojo.vo.GetRecomUserListVO;
+import com.devspark.userservice.pojo.vo.matchedService.getMatchedListApi.MatchedUserInfo;
+import com.devspark.userservice.pojo.vo.matchedService.getRecommendApi.GetRecomUserListVO;
 import com.devspark.userservice.service.UserInfoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -28,9 +29,9 @@ public class UserInfoController {
     }
 
     @GetMapping("/my-profile")
-    public ResponseEntity<List<UserInfoEntity>> getAllUsers() {
-        List<UserInfoEntity> users = userInfoService.getAllUserInfo();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<UserInfoEntity> getAllUsers(@RequestHeader(name = "user_id")Long userId) {
+        UserInfoEntity myProfile = userInfoService.getMyProfile(userId);
+        return ResponseEntity.ok(myProfile);
     }
 
     @PostMapping("/save-user-info")
@@ -40,8 +41,8 @@ public class UserInfoController {
     }
 
     @PostMapping("/get-user-list")
-    public ResponseEntity<List<UserInfoEntity>> getUserList(@RequestBody UserListQueryDTO userListQueryDTO){
-        List<UserInfoEntity> userList = userInfoService.getUserList(userListQueryDTO);
+    public ResponseEntity<List<MatchedUserInfo>> getUserList(@RequestBody UserListQueryDTO userListQueryDTO){
+        List<MatchedUserInfo> userList = userInfoService.getUserList(userListQueryDTO);
         return ResponseEntity.ok(userList);
     }
 

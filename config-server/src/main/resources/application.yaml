@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: config-server
+  cloud:
+    consul:
+      config:
+        enabled: false
+      discovery:
+        instanceId: ${spring.application.name}-${server.port}-${random.int[1,99]}
+        prefer-ip-address: true
+      host: 127.0.0.1
+      port: 8500
+
+    config:
+      server:
+        git:
+          uri: ${{secrets.CONFIG_SERVER_GIT_URI}}
+          ignore-local-ssh-settings: true
+          default-label: main
+          private-key: ${SSH_KEY}
+
+server:
+  port: ${{secrets.CONFIG_SERVER_PORT}}

@@ -1,5 +1,6 @@
 package com.devspark.userservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,6 +18,7 @@ public class UserInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "SERIAL", name = "id")
+    @JsonIgnore
     private Long id;
 
     @Column(name = "user_id")

@@ -7,10 +7,7 @@ import com.devspark.matchservice.exception.customExceptions.NoRecommendUserExcep
 import com.devspark.matchservice.pojo.dto.GetMyMatchedUserListDTO;
 import com.devspark.matchservice.pojo.dto.GetMyRecommendUserListDTO;
 import com.devspark.matchservice.pojo.dto.LikeOrUnlikeDTO;
-import com.devspark.matchservice.pojo.vo.GetMatchedUserListVO;
-import com.devspark.matchservice.pojo.vo.GetRecomUserListVO;
-import com.devspark.matchservice.pojo.vo.LikeOrUnlikeVO;
-import com.devspark.matchservice.pojo.vo.RecommendedUser;
+import com.devspark.matchservice.pojo.vo.*;
 import com.devspark.matchservice.repository.LikeHistoryRepository;
 import com.devspark.matchservice.repository.MatchedHistoryRepository;
 import com.devspark.matchservice.service.MatchService;
@@ -79,8 +76,8 @@ public class MatchServiceImpl implements MatchService {
         allUserIds.addAll(matchedIdsPartTwo);
 
         // 2. call user service with matched ids and get list of corresponding user info
-        GetMatchedUserListVO matchedUserInfoList = apiClientForUserService.getMatchedUserInfoList(new GetMyMatchedUserListDTO(allUserIds));
-        return matchedUserInfoList;
+        List<MatchedUserInfo> matchedUserInfoList = apiClientForUserService.getMatchedUserInfoList(new GetMyMatchedUserListDTO(allUserIds));
+        return new GetMatchedUserListVO(matchedUserInfoList);
     }
 
     @Override

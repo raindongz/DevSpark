@@ -43,7 +43,7 @@ public class AuthenticationFilter implements GatewayFilter {
                 log.error("invalid token");
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
             }
-            exchange.getRequest().mutate().header("userid", claimsSet.get().getSubject());
+            exchange.getRequest().mutate().header("user_id", claimsSet.get().getSubject());
         }
         return chain.filter(exchange);
     }

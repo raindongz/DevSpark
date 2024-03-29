@@ -21,8 +21,17 @@ public class RouteConfig {
                 .routes()
                 .route(r -> r.path("/user/**")
                         .filters(f -> f.prefixPath("/api").filter(filter))
-                        .uri("http://localhost:8081")
+                        .uri("lb://micro-auth-service")
                 )
+                .route(r -> r.path("/user-info/**")
+                        .filters(f -> f.prefixPath("/api").filter(filter))
+                        .uri("lb://micro-user-service"))
+                .route(r -> r.path("/match/**")
+                        .filters(f -> f.prefixPath("/api").filter(filter))
+                        .uri("lb://micro-match-service"))
+                .route(r -> r.path("/chat/**")
+                        .filters(f -> f.prefixPath("/api").filter(filter))
+                        .uri("lb://micro-chat-service"))
                 .build();
     }
 }
