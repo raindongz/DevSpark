@@ -29,8 +29,8 @@ jobs:
 
       - name: replace config with secrets
         run: |
-          echo ${{CONFIG_SERVER_PROPERTIES}} > application.properties
-          cat ${{CONFIG_SERVER_PROPERTIES}}
+          echo ${{secrets.CONFIG_SERVER_PROPERTIES}} > application.properties
+          cat ${{secrets.CONFIG_SERVER_PROPERTIES}}
 
       - name: Build, tag, and push docker image to Amazon ECR
         working-directory: config-server
