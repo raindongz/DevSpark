@@ -1,7 +1,7 @@
 # Build Stage
 FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
-COPY /config-server/src /home/app/src
-COPY /config-server/pom.xml /home/app
+COPY src /home/app/src
+COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package -DskipTests
 
 
