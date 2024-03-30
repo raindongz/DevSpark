@@ -8,9 +8,9 @@ RUN mvn -f /home/app/pom.xml clean package -DskipTests
 # Execution Stage
 FROM bellsoft/liberica-runtime-container:jdk-21-slim-musl
 MAINTAINER @RundongZhong
-COPY --from=build /home/app/target/auth-service-0.0.1-SNAPSHOT.jar /usr/local/lib/auth-service-0.0.1-SNAPSHOT.jar
-EXPOSE 8091
-ENTRYPOINT ["java","-jar","/usr/local/lib/auth-service-0.0.1-SNAPSHOT.jar"]
+COPY --from=build /home/app/target/api-gateway-0.0.1-SNAPSHOT.jar /usr/local/lib/api-gateway-0.0.1-SNAPSHOT.jar
+EXPOSE 8090
+ENTRYPOINT ["java","-jar","/usr/local/lib/api-gateway-0.0.1-SNAPSHOT.jar"]
 
 #FROM bellsoft/liberica-runtime-container:jdk-21-slim-musl
 #COPY target/config-server-0.0.1-SNAPSHOT.jar /opt/app/
