@@ -38,7 +38,7 @@ jobs:
         working-directory: config-server
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: devspark_api_gateway
+          REPOSITORY: devspark-config-server
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
