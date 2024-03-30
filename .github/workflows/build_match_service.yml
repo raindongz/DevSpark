@@ -1,9 +1,9 @@
-name: build and push to ECR
+name: build match service and push to ECR
 
 on:
   workflow_dispatch:
   push:
-    branches: ["main", "develop"]
+    branches: ["main"]
 
 jobs:
   build:
@@ -27,10 +27,18 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: replace config with secrets
+        working-directory: match-service
+        env:
+          MATCH_SERVICE: ${{secrets.MATCH_SERVICE}}
+        run: |
+          echo $MATCH_SERVICE > application.properties
+
       - name: Build, tag, and push docker image to Amazon ECR
+        working-directory: match-service
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: devspark-config-server
+          REPOSITORY: devspark_match_service
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .

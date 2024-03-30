@@ -1,9 +1,9 @@
-name: build and push to ECR
+name: build api gateway and push to ECR
 
 on:
   workflow_dispatch:
   push:
-    branches: ["main", "develop"]
+    branches: ["main"]
 
 jobs:
   build:
@@ -27,10 +27,18 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: replace config with secrets
+        working-directory: api-gateway
+        env:
+          API_GATEWAY_CONFIG: ${{secrets.API_GATEWAY_CONFIG}}
+        run: |
+          echo $API_GATEWAY_CONFIG > application.properties
+
       - name: Build, tag, and push docker image to Amazon ECR
+        working-directory: api-gateway
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: devspark-config-server
+          REPOSITORY: devspark_api_gateway
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .

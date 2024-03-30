@@ -14,10 +14,10 @@ spring:
     config:
       server:
         git:
-          uri: ${{secrets.CONFIG_SERVER_GIT_URI}}
+          uri: git@github.com:raindongz/DevSpark-config-server.git
           ignore-local-ssh-settings: true
           default-label: main
-          private-key: ${SSH_KEY}
-
+          private-key: 1234
 server:
-  port: ${{secrets.CONFIG_SERVER_PORT}}
+  port: 8888
+
