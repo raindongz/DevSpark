@@ -1,0 +1,45 @@
+name: build auth service and push to ECR
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
+
+    name: build and push image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4 # More information on this action can be found below in the 'AWS Credentials' section
+        with:
+          role-to-assume: arn:aws:iam::730335295917:role/devspark_build_push
+          aws-region: us-east-2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: replace config with secrets
+        working-directory: auth-service
+        env:
+          AUTH_SERVICE_CONFIG: ${{secrets.AUTH_SERVICE_CONFIG}}
+        run: |
+          echo $AUTH_SERVICE_CONFIG > application.properties
+
+      - name: Build, tag, and push docker image to Amazon ECR
+        working-directory: auth-service
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: devspark_auth_service
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
