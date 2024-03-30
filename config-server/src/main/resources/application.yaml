@@ -17,7 +17,8 @@ spring:
           uri: git@github.com:raindongz/DevSpark-config-server.git
           ignore-local-ssh-settings: true
           default-label: main
-          private-key: ${SSH_KEY}
+          private-key: | 
+              ${SSH_KEY}
 server:
   port: 8888
 
