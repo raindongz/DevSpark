@@ -32,7 +32,7 @@ jobs:
         env:
           CHAT_SERVICE_CONFIG: ${{secrets.CHAT_SERVICE_CONFIG}}
         run: |
-          echo $CHAT_SERVICE_CONFIG > application.properties
+          echo "$CHAT_SERVICE_CONFIG" > src/main/resources/application.properties
 
       - name: Build, tag, and push docker image to Amazon ECR
         working-directory: chat-service

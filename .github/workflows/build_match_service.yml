@@ -32,7 +32,8 @@ jobs:
         env:
           MATCH_SERVICE: ${{secrets.MATCH_SERVICE}}
         run: |
-          echo $MATCH_SERVICE > application.properties
+          echo "$MATCH_SERVICE" > src/main/resources/application.properties
+#          echo "$MATCH_SERVICE" | sed 's/./& /g'
 
       - name: Build, tag, and push docker image to Amazon ECR
         working-directory: match-service
