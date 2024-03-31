@@ -32,7 +32,7 @@ jobs:
         env:
           CONFIG_SERVER: ${{secrets.CONFIG_SERVER_PROPERTIES}}
         run: |
-          echo $CONFIG_SERVER > application.properties
+          echo $CONFIG_SERVER > application.yaml
 
       - name: Build, tag, and push docker image to Amazon ECR
         working-directory: config-server
