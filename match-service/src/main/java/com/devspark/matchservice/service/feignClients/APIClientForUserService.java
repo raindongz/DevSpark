@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(url = "http://localhost:8082", value = "user-micro-service")
+@FeignClient("user-service")
 public interface APIClientForUserService {
 
     @PostMapping("/api/user-info/get-my-recommend-list")
