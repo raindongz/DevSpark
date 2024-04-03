@@ -1,6 +1,7 @@
 spring:
   application:
     name: config-server
+
   cloud:
     consul:
       config:
@@ -8,7 +9,7 @@ spring:
       discovery:
         instanceId: ${spring.application.name}-${server.port}-${random.int[1,99]}
         prefer-ip-address: true
-      host: 18.188.155.126
+      host: 74.249.103.77
       port: 8500
 
     config:
@@ -17,7 +18,7 @@ spring:
           uri: git@github.com:raindongz/DevSpark-config-server.git
           ignore-local-ssh-settings: true
           default-label: main
-          private-key: | 
+          private-key: |
               ${SSH_KEY}
 server:
   port: 8888
