@@ -3,7 +3,7 @@
 ### Introduction:
 * This is the backend services for project DevSpark, our goal is to build a **tinder for engineers**
 
-### Our Distributed System Architect:
+### Our Distributed System Architecture:
 ![devspark_backend_architect.png](devspark_backend_architect.png)
 
 ### Tech stacks we used:
