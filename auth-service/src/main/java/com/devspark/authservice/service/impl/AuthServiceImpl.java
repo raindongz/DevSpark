@@ -52,6 +52,9 @@ public class AuthServiceImpl implements AuthService {
     @Value("${rsa.private-key}")
     private String rsaPrivateKey;
 
+    @Value("${token-valid-time}")
+    private Integer tokenValidTime;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public CreateUserVO createUser(CreateUserDTO createUserDTO) {
@@ -182,8 +185,8 @@ public class AuthServiceImpl implements AuthService {
         // Prepare JWT with claims set
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(userId.toString())
-                .issuer("https://devspark.com")
-                .expirationTime(new Date(new Date().getTime() + 60 * 1000))
+                .issuer("https://devspark.click")
+                .expirationTime(new Date(new Date().getTime() + tokenValidTime * 1000 * 60 * 60))
                 .build();
 
         SignedJWT signedJWT = new SignedJWT(
