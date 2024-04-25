@@ -62,7 +62,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserInfoEntity getMyProfile(Long userId) {
-        Optional<UserInfoEntity> myInfoEntity = userInfoRepository.findById(userId);
+        Optional<UserInfoEntity> myInfoEntity = userInfoRepository.findByUserIdAndDeletedFlag(userId, DeleteFlags.NOT_DELETED);
         if (myInfoEntity.isEmpty()){
             log.error("user not exist: " + userId);
             throw new UserNotFoundException("user not exist");
