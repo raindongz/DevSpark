@@ -18,4 +18,6 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> 
 
     @Query("SELECT u FROM UserInfoEntity u WHERE u.deletedFlag=0 AND u.userId IN :userIds")
     List<UserInfoEntity> getUserList(List<Long> userIds, Pageable pageable);
+
+    Optional<UserInfoEntity> findByUserIdAndDeletedFlag(Long userId, Integer deleted);
 }
